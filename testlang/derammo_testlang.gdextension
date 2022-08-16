@@ -1,0 +1,18 @@
+[configuration]
+
+entry_symbol = "derammo_testlang_library_init"
+
+[libraries]
+
+macos.debug = "bin/libderammo_testlang.macos.debug.framework"
+macos.release = "bin/libderammo_testlang.macos.release.framework"
+windows.debug.x86_32 = "bin/libderammo_testlang.windows.debug.x86_32.dll"
+windows.release.x86_32 = "bin/libderammo_testlang.windows.release.x86_32.dll"
+windows.debug.x86_64 = "bin/libderammo_testlang.windows.debug.x86_64.dll"
+windows.release.x86_64 = "bin/libderammo_testlang.windows.release.x86_64.dll"
+linux.debug.x86_64 = "bin/libderammo_testlang.linux.debug.x86_64.so"
+linux.release.x86_64 = "bin/libderammo_testlang.linux.release.x86_64.so"
+linux.debug.arm64 = "bin/libderammo_testlang.linux.debug.arm64.so"
+linux.release.arm64 = "bin/libderammo_testlang.linux.release.arm64.so"
+linux.debug.rv64 = "bin/libderammo_testlang.linux.debug.rv64.so"
+linux.release.rv64 = "bin/libderammo_testlang.linux.release.rv64.so"

@@ -1,0 +1,15 @@
+# Generated directories with binaries
+build/
+bin/
+
+# binaries
+*.obj
+*.o
+
+# IDE state
+*.dblite
+.vs/
+.vscode/
+
+# temp files
+*~

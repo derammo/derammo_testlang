@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+import os
+import sys
+
+env = SConscript("../godot-cpp/SConstruct")
+env.Append(CPPPATH=["src/"])
+sources = Glob("src/*.cpp")
+
+if env["platform"] == "macos":
+    library = env.SharedLibrary(
+        "build/derammo_testlang/bin/libderammo_testlang.{}.{}.framework/libderammo_testlang.{}.{}".format(
+            env["platform"], env["target"], env["platform"], env["target"]
+        ),
+        source=sources,
+    )
+else:
+    library = env.SharedLibrary(
+        "build/derammo_testlang/bin/libderammo_testlang.{}.{}.{}{}".format(
+            env["platform"], env["target"], env["arch_suffix"], env["SHLIBSUFFIX"]
+        ),
+        source=sources,
+    )
+definition_file = env.Install("build/derammo_testlang", "derammo_testlang.gdextension")
+Default(library, definition_file)
