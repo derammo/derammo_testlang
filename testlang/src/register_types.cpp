@@ -41,6 +41,7 @@
 
 #include "DerammoTestLanguage.h"
 #include "DerammoTestScript.h"
+#include "DerammoTestThreadContext.h"
 
 using namespace godot;
 
@@ -49,37 +50,38 @@ Ref<DerammoTestScriptResourceSaver> saver;
 DerammoTestLanguage* language = nullptr;
 
 void initialize_derammo_testlang_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
-		return;
-	}
+    if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+        return;
+    }
 
-	ClassDB::register_class<DerammoTestLanguage>();
-	ClassDB::register_class<DerammoTestScript>();
-	ClassDB::register_class<DerammoTestScriptResourceLoader>();
-	ClassDB::register_class<DerammoTestScriptResourceSaver>();
+    ClassDB::register_class<DerammoTestLanguage>();
+    ClassDB::register_class<DerammoTestScript>();
+    ClassDB::register_class<DerammoTestScriptResourceLoader>();
+    ClassDB::register_class<DerammoTestScriptResourceSaver>();
+    ClassDB::register_class<DerammoTestThreadContext>();
 
-	language = memnew(DerammoTestLanguage());
-	Engine::get_singleton()->register_script_language(language);
+    language = memnew(DerammoTestLanguage());
+    Engine::get_singleton()->register_script_language(language);
 
-	loader.instantiate();
-	loader->language = language;
-	ResourceLoader::get_singleton()->add_resource_format_loader(loader);
+    loader.instantiate();
+    loader->language = language;
+    ResourceLoader::get_singleton()->add_resource_format_loader(loader);
 
-	saver.instantiate();
-	ResourceSaver::get_singleton()->add_resource_format_saver(saver);
+    saver.instantiate();
+    ResourceSaver::get_singleton()->add_resource_format_saver(saver);
 }
 
 void uninitialize_derammo_testlang_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
-		return;
-	}
-	ResourceLoader::get_singleton()->remove_resource_format_loader(loader);
-	ResourceSaver::get_singleton()->remove_resource_format_saver(saver);
+    if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+        return;
+    }
+    ResourceLoader::get_singleton()->remove_resource_format_loader(loader);
+    ResourceSaver::get_singleton()->remove_resource_format_saver(saver);
 
-	loader.unref();
-	saver.unref();
+    loader.unref();
+    saver.unref();
 
-	// can't unregister this and can never deallocate because of thread exit handlers
+    // can't unregister this and can never deallocate because of thread exit handlers
 #if 0
 	if (language != nullptr)
 	{
@@ -93,13 +95,15 @@ extern "C" {
 
 // Initialization.
 
-GDNativeBool GDN_EXPORT derammo_testlang_library_init(const GDNativeInterface *p_interface, const GDNativeExtensionClassLibraryPtr p_library, GDNativeInitialization *r_initialization) {
-	godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
+GDNativeBool GDN_EXPORT derammo_testlang_library_init(const GDNativeInterface* p_interface,
+                                                      const GDNativeExtensionClassLibraryPtr p_library,
+                                                      GDNativeInitialization* r_initialization) {
+    godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
 
-	init_obj.register_initializer(initialize_derammo_testlang_module);
-	init_obj.register_terminator(uninitialize_derammo_testlang_module);
-	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
+    init_obj.register_initializer(initialize_derammo_testlang_module);
+    init_obj.register_terminator(uninitialize_derammo_testlang_module);
+    init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
 
-	return init_obj.init();
+    return init_obj.init();
 }
 }

@@ -1,5 +1,6 @@
-#ifndef DERAMMOTESTSCRIPT_H
-#define DERAMMOTESTSCRIPT_H
+#pragma once
+
+#include "DerammoTestLang.h"
 
 #include <godot/gdnative_interface.h>
 
@@ -13,17 +14,15 @@
 
 using namespace godot;
 
-class DerammoTestScript: public ScriptExtension
-{
+class DerammoTestScript : public ScriptExtension {
 	GDCLASS(DerammoTestScript, ScriptExtension)
 
 	friend class DerammoTestLanguage;
 
 	DerammoTestLanguage* language = nullptr;
-	
+
 protected:
-	static void _bind_methods()
-	{
+	static void _bind_methods() {
 		// no code
 	}
 
@@ -42,7 +41,6 @@ public:
 	Dictionary _get_constants() const override;
 	Array _get_members() const override;
 	bool _is_placeholder_fallback_enabled() const override;
-	Array _get_rpc_methods() const override;
 	Array _get_documentation() const override;
 	bool _has_property_default_value(const StringName& name) const override;
 	Ref<Script> _get_base_script() const override;
@@ -51,22 +49,17 @@ public:
 	void _set_source_code(const String& code) override;
 	void _update_exports() override;
 
-#if 0
 	void* _instance_create(Object* for_object) const override;
-#endif
-
 };
 
-class DerammoTestScriptResourceLoader: public ResourceFormatLoader
-{
+class DerammoTestScriptResourceLoader : public ResourceFormatLoader {
 	GDCLASS(DerammoTestScriptResourceLoader, ResourceFormatLoader)
 
 	friend void initialize_derammo_testlang_module(ModuleInitializationLevel p_level);
 	DerammoTestLanguage* language = nullptr;
 
 protected:
-	static void _bind_methods()
-	{
+	static void _bind_methods() {
 		// no code
 	}
 
@@ -76,23 +69,20 @@ public:
 	String _get_resource_type(const String& path) const override;
 	PackedStringArray _get_dependencies(const String& path, bool add_types) const override;
 	Variant _load(const String& path, const String& original_path, bool use_sub_threads,
-		int64_t cache_mode) const override;
+	              int64_t cache_mode) const override;
 };
 
-class DerammoTestScriptResourceSaver : public ResourceFormatSaver
-{
+class DerammoTestScriptResourceSaver : public ResourceFormatSaver {
 	GDCLASS(DerammoTestScriptResourceSaver, ResourceFormatSaver)
 
 protected:
-	static void _bind_methods()
-	{
+	static void _bind_methods() {
 		// no code
 	}
-	
+
 public:
-	int64_t _save(const String& path, const Ref<Resource>& resource, int64_t flags) override;
+	int64_t _save(const Ref<Resource>& p_resource, const String& path, int64_t flags) override;
 	bool _recognize(const Ref<Resource>& resource) const override;
 	PackedStringArray _get_recognized_extensions(const Ref<Resource>& resource) const override;
 };
 
-#endif // DERAMMOTESTSCRIPT_H
